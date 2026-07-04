@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    env:
+      CONTENT_SOURCE: mock
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests (schema + SemVer)
+        run: npm run test
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: E2E + accessibility tests
+        run: npm run test:e2e
+
+      - name: Enforce no critical/serious a11y violations
+        run: |
+          node -e "
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('a11y-report.json', 'utf-8'));
+            const bad = report.routes.flatMap(r =>
+              r.violations.filter(v => v.impact === 'critical' || v.impact === 'serious')
+                .map(v => ({ route: r.route, ...v }))
+            );
+            if (bad.length > 0) {
+              console.error('Critical/serious accessibility violations found:', JSON.stringify(bad, null, 2));
+              process.exit(1);
+            }
+            console.log('No critical/serious accessibility violations.');
+          "
+
+      - name: Upload a11y report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-report
+          path: a11y-report.json
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
