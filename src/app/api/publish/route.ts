@@ -21,6 +21,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'invalid-schema', issues: parsed.error.issues }, { status: 400 });
   }
 
+  // ADD THIS BLOCK HERE
+if (process.env.VERCEL) {
+  return NextResponse.json(
+    {
+      error: 'unsupported-environment',
+      message:
+        'Publishing is disabled on the deployed demo because Vercel provides a read-only filesystem. Run the project locally to create immutable release snapshots.',
+    },
+    { status: 501 }
+  );
+}
+
+
   const result = await publishDraft(parsed.data.slug, parsed.data);
   if (result.status === 'no-op') {
     return NextResponse.json(
