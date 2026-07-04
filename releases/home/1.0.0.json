@@ -1,0 +1,72 @@
+{
+  "version": "1.0.0",
+  "publishedAt": "2026-07-04T12:25:02.612Z",
+  "page": {
+    "pageId": "ctf-home-001",
+    "slug": "home",
+    "title": "Home",
+    "sections": [
+      {
+        "id": "sec-hero-1",
+        "type": "hero",
+        "props": {
+          "heading": "Ship landing pages without shipping code",
+          "subheading": "Page Studio lets editors build, preview, and publish pages backed by Contentful."
+        }
+      },
+      {
+        "id": "sec-features-1",
+        "type": "featureGrid",
+        "props": {
+          "heading": "Everything you need",
+          "features": [
+            {
+              "title": "Schema-validated sections",
+              "description": "Zod catches bad data before it renders."
+            },
+            {
+              "title": "Immutable releases",
+              "description": "Every publish is a versioned, replayable snapshot."
+            },
+            {
+              "title": "RBAC built in",
+              "description": "Viewers, editors, and publishers see exactly what they should."
+            }
+          ]
+        }
+      },
+      {
+        "id": "sec-testimonial-1",
+        "type": "testimonial",
+        "props": {
+          "quote": "We cut our landing page turnaround from days to minutes.",
+          "author": "Priya Shah",
+          "role": "Head of Growth"
+        }
+      },
+      {
+        "id": "sec-cta-1",
+        "type": "cta",
+        "props": {
+          "label": "Try the studio",
+          "url": "/studio/home",
+          "style": "primary"
+        }
+      }
+    ]
+  },
+  "changelog": [
+    {
+      "kind": "section-removed",
+      "sectionId": "sec-oqnvA1ON",
+      "detail": "Section \"sec-oqnvA1ON\" removed",
+      "bump": "major"
+    },
+    {
+      "kind": "props-changed",
+      "sectionId": "sec-hero-1",
+      "detail": "Value changed for: subheading",
+      "bump": "patch"
+    }
+  ]
+}
